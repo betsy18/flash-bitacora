@@ -15,7 +15,7 @@ $(document).ready(function() {
     } // Callback for Modal close
   }
   );
-  
+
 
   $('#modals').on('click', function(event) {
     // $('#modal-chat').addClass('modal-trigger');
@@ -36,8 +36,8 @@ $(document).ready(function() {
     <form class="col s12">
       <div class="row">
         <div class="input-field col s12">
-          <input placeholder="Placeholder" id="txtTitle" type="text">
-          <label for="Title">Título</label>
+          <input placeholder="Placeholder" id="txtTitle" type="text" data-length="10">
+          <label for="txtTitle">Título</label>
         </div>
         <div class="input-field col s12">
           <textarea id="txtMessage" class="materialize-textarea"></textarea>
@@ -53,15 +53,57 @@ $(document).ready(function() {
   }
 
   function public() {
-    $('#txtTitle').on('input', function() {
-      let txtTitle = $('#txtTitle');
+    let txtTitle = $('#txtTitle');
+    let txtMessage = $('#txtMessage');
+    let btnSend = $('#btnSend');
+    let valideTitle = false;
+    let valideMessage = false;
+    function desactiveButton() {
+      $('#btnSend').attr('disabled', true);
+    }
+    function activeButton() {
+      if (valideTitle && valideMessage) {
+        $('#btnSend').attr('disabled', false);
+      }
+    }
+
+    txtTitle.on('input', function() {
+      console.log($(this).val());
+      if ($(this).val().length > 0 && $(this).val().length < 10) {
+        console.log($(this).val());
+        valideTitle = true;
+        activeButton();
+      } else {
+        valideTitle = false;
+        desactiveButton();
+      }
+    });
+
+    txtMessage.on('input', function() {
+      console.log($(this).val());
+      if ($(this).val().length > 0) {
+        console.log($(this).val());
+        valideMessage = true;
+        activeButton();
+      } else {
+        valideMessage = false;
+        desactiveButton();
+      } 
+    });
+
+    $('#btnSend').on('click', function(event) {
+      event.preventDefault();
       console.log(txtTitle.val());
+      console.log(txtMessage.val());
+      $('.content-chat').append(`
+      <h4>${txtTitle.val()}</h4>
+      <p>${txtMessage.val()}</p>
+      `);
+      alert('Mesaje ingresado con éxito');
     });
   }
-  
 
-  // let txtTitle = $('#txtTitle');
-    
+
 
   function modalPhoto() {
     // $('a').find('').text('hola');
@@ -87,18 +129,17 @@ $(document).ready(function() {
   }
 
   function modalEvent() {
+    $('#modal-event').addClass('modal-trigger');
+    $('.modal-content').append(`
+    <div class="row">
+    <form class="col s12">
+    `);
+
+    // <input type="text" class="datepicker">
 
   }
 
   function modalVideo() {
 
   }
-
-  // function public(event) {
-  //   // event.preventDefault();
-  //   let btnSend = $('#btnSend');
-  //   let txtTitle = $('#txtTitle');
-  //   console.log(txtTitle).val();
-  //   console.log(btnSend).val();
-  // }
 });
