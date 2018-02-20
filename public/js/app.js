@@ -85,7 +85,7 @@ $(document).ready(function() {
       event.preventDefault();
       console.log(txtTitle.val());
       console.log(txtMessage.val());
-      $('.element').append(`
+      $('.modal-chat').append(`
       <h4>${txtTitle.val()}</h4>
       <p>${txtMessage.val()}</p>
       `);
@@ -98,7 +98,11 @@ $(document).ready(function() {
     $('#modal-photo').addClass('modal-trigger');
     $('.modal-content-photo').append(`
       <div class="row">
-        <form class="col s12" action="#">
+        <div class="input-field col s12">
+          <input id="txtTitle" type="text" data-length="10">
+          <label for="txtTitle">Título</label>
+        </div>
+        <form class="col s12">
           <div class="file-field input-field">
             <div class="btn">
               <span>Seleccionar</span>
@@ -107,6 +111,9 @@ $(document).ready(function() {
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" placeholder="Seleccione su archivo">
             </div>
+            <button class="btn waves-effect waves-light right" type="submit" name="action" id="btnImg">Publicar
+            <i class="material-icons right">send</i>
+           </button>
           </div>
         </form>
       </div>`);
@@ -116,7 +123,7 @@ $(document).ready(function() {
   function saveImg() {
     $('file').on('change', function() {
       if (typeof(FileReader) !== undefined) {
-        $('.element').html(`
+        $('.modal-img').html(`
         <figure>
           <img id="preview">
         </figure>
@@ -134,6 +141,18 @@ $(document).ready(function() {
         console.log('Formato desconocido');
       }
     });
+
+    $('#btnImg').on('click', function(event) {
+      event.preventDefault();
+      // console.log(txtTitle.val());
+      console.log(preview.val());
+      $('.modal-img').append(`
+      <figure>
+      <img id="${preview.val()}"> hola
+      </figure>
+      `);
+      alert('Mensaje ingresado con éxito');
+    });
   }
 
 
@@ -146,6 +165,7 @@ $(document).ready(function() {
           <div class="input-field col s6">
             <input id="input_text" type="text" data-length="10">
             <label for="input_text">Título de tu evento</label>
+         </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
