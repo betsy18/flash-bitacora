@@ -21,12 +21,12 @@
       </a>
       <ul>
         <li>
-          <a href="#modal1" class="btn-floating red waves-effect" id="modal-chat">
+          <a href="#modalChat" class="btn-floating red waves-effect" id="modal-chat">
             <i class="material-icons">chat</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating yellow darken-1" id="modal-photo">
+          <a href="#modalPhoto" class="btn-floating yellow darken-1" id="modal-photo">
             <i class="material-icons">photo</i>
           </a>
         </li>
@@ -46,17 +46,38 @@
 
   <!-- llenar campos -->
   <div class="row">
-    <div class="content-chat"></div>
+    <div class="element"></div>
   </div>
   <!-- modal- -->
-  <div id="modal1" class="modal">
-    <div class="modal-content">
+  <div id="modalChat" class="modal">
+    <div class="modal-content-chat">
     </div>
     <div class="modal-footer">
-      <!-- <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a> -->
+    </div>
+  </div>
+
+  <div id="modalPhoto" class="modal">
+    <div class="modal-content-photo">
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+  <div id="modalEvent" class="modal">
+    <div class="modal-content-event">
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+  <div id="modalVideo" class="modal">
+    <div class="modal-content-video">
+    </div>
+    <div class="modal-footer">
     </div>
   </div>
   <!-- fin modal -->
+
   <!-- google maps -->
   <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>

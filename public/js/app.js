@@ -1,54 +1,44 @@
 $(document).ready(function() {
-  $('.modal').modal({
-    dismissible: true, // Modal can be dismissed by clicking outside of the modal
-    opacity: 0.5, // Opacity of modal background
-    inDuration: 300, // Transition in duration
-    outDuration: 200, // Transition out duration
-    startingTop: '4%', // Starting top style attribute
-    endingTop: '10%', // Ending top style attribute
-    ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-      // alert("Ready");
-      console.log(modal, trigger);
-    },
-    complete: function() {
-      // alert('Closed'); 
-    } // Callback for Modal close
-  }
-  );
+  $('.modal').modal();
 
-
-  $('#modals').on('click', function(event) {
-    // $('#modal-chat').addClass('modal-trigger');
-    // $('.modal-content').find('h4').text('hola');
-    // event.preventDefault();
-    modalChat();
-    modalPhoto();
-    modalEvent();
-    modalVideo();
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15, // Creates a dropdown of 15 years to control year,
+    today: 'Today',
+    clear: 'Clear',
+    close: 'Ok',
+    closeOnSelect: false // Close upon selecting a date,
   });
+
+  modalChat();
+  modalPhoto();
+  modalEvent();
+  modalVideo();
 
   function modalChat() {
     // event.preventDefault();
-    // $('#modal1').attr('id:', 'hola');
+    // $('.modal').attr('id', 'modalChat');
+    // $('#modal-chat').attr('href', '#modalChat');
     $('#modal-chat').addClass('modal-trigger');
-    $('.modal-content').append(`
-    <div class="row">
-    <form class="col s12">
+    // cambiar por content para que aparezca
+    $('.modal-content-chat').append(`
       <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Placeholder" id="txtTitle" type="text" data-length="10">
-          <label for="txtTitle">Título</label>
-        </div>
-        <div class="input-field col s12">
-          <textarea id="txtMessage" class="materialize-textarea"></textarea>
-          <label for="txtMessage">Textarea</label>
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action" id="btnSend">Publicar
-          <i class="material-icons right">send</i>
-        </button>
-      </div>
-    </form>
-    </div>`);
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="txtTitle" type="text" data-length="10">
+              <label for="txtTitle">Título</label>
+            </div>
+            <div class="input-field col s12">
+              <textarea id="txtMessage" class="materialize-textarea"></textarea>
+              <label for="txtMessage">Textarea</label>
+            </div>
+             <button class="btn waves-effect waves-light" type="submit" name="action" id="btnSend">Publicar
+              <i class="material-icons right">send</i>
+             </button>
+           </div>
+        </form>
+      </div>`);
     public();
   }
 
@@ -88,58 +78,99 @@ $(document).ready(function() {
       } else {
         valideMessage = false;
         desactiveButton();
-      } 
+      }
     });
 
     $('#btnSend').on('click', function(event) {
       event.preventDefault();
       console.log(txtTitle.val());
       console.log(txtMessage.val());
-      $('.content-chat').append(`
+      $('.element').append(`
       <h4>${txtTitle.val()}</h4>
       <p>${txtMessage.val()}</p>
       `);
-      alert('Mesaje ingresado con éxito');
+      alert('Mensaje ingresado con éxito');
     });
   }
 
 
-
   function modalPhoto() {
-    // $('a').find('').text('hola');
     $('#modal-photo').addClass('modal-trigger');
-    $('.modal-content').append(`
-    <div class="row">
-    <form class="col s12">
+    $('.modal-content-photo').append(`
       <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Placeholder" id="txtTitle" type="text">
-          <label for="txtTitle">Título</label>
-        </div>
-        <div class="input-field col s12">
-          <textarea id="txtMessage" class="materialize-textarea"></textarea>
-          <label for="txtMessage">Textarea</label>
-        </div>
-        <button class="btn waves-effect waves-light" type="submit" name="action" id="btnSend">Publicar
-          <i class="material-icons right">send</i>
-        </button>
-      </div>
-    </form>
-    </div>`);
+        <form class="col s12" action="#">
+          <div class="file-field input-field">
+            <div class="btn">
+              <span>Seleccionar</span>
+              <input type="file" multiple>
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text" placeholder="Seleccione su archivo">
+            </div>
+          </div>
+        </form>
+      </div>`);
+    saveImg();
   }
+
+  function saveImg() {
+    $('file').on('change', function() {
+      if (typeof(FileReader) !== undefined) {
+        $('.element').html(`
+        <figure>
+          <img id="preview">
+        </figure>
+        `);
+        let preview = $('#preview');
+        console.log(preview);
+        preview.empty();
+  
+        let reader = new FileReader();
+        reader.onload = function(event) {
+          $('#preview').attr('src', event.target.result);
+        };
+        reader.readAsDataURL($(this)[0].files[0]);
+      } else {
+        console.log('Formato desconocido');
+      }
+    });
+  }
+
 
   function modalEvent() {
     $('#modal-event').addClass('modal-trigger');
-    $('.modal-content').append(`
+    $('.content-event').append(`
     <div class="row">
-    <form class="col s12">
-    `);
-
-    // <input type="text" class="datepicker">
-
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="input_text" type="text" data-length="10">
+            <label for="input_text">Título de tu evento</label>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input type="text" class="datepicker">
+          </div>
+        </div>
+      </form>
+   </div>`);
   }
 
   function modalVideo() {
-
+    $('#modal-video').addClass('modal-trigger');
+    $('.modal-content-video').append(`
+    <div class="row">
+        <form class="col s12" action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Seleccionar</span>
+            <input type="file" multiple>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Seleccione su archivo">
+          </div>
+          </div>
+      </form>
+    </div>`);
   }
 });
