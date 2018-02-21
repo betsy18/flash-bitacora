@@ -21,7 +21,7 @@
       </a>
       <ul>
         <li>
-          <a href="#modalChat" class="btn-floating red waves-effect" id="modal-chat">
+          <a href="#modalChat" class="btn-floating red waves-effect " id="modal-chat">
             <i class="material-icons">chat</i>
           </a>
         </li>
@@ -31,12 +31,12 @@
           </a>
         </li>
         <li>
-          <a class="btn-floating green" id="modal-event">
+          <a href="#modalEvent" class="btn-floating green" id="modal-event">
             <i class="material-icons">event</i>
           </a>
         </li>
         <li>
-          <a class="btn-floating blue" id="modal-video">
+          <a href="#modalVideo" class="btn-floating blue" id="modal-video">
             <i class="material-icons">video_library</i>
           </a>
         </li>
@@ -47,6 +47,12 @@
   <!-- llenar campos -->
   <div class="row">
     <div class="element"></div>
+    <div class="img"></div>
+    <div class="event">
+      <div class="row"></div>
+      <div id="map" class="responsive-img"></div>
+    </div>
+    <div class="video"></div>
   </div>
   <!-- modal- -->
   <div id="modalChat" class="modal">
@@ -83,6 +89,9 @@
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-hczw59j3WL-rdteIU-pSCY5FNoFMwD4&libraries=places&callback=initMap">
+  </script>
 </body>
 
 </html>

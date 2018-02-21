@@ -1,14 +1,6 @@
 $(document).ready(function() {
   $('.modal').modal();
-
-  $('.datepicker').pickadate({
-    selectMonths: true, // Creates a dropdown to control month
-    selectYears: 15, // Creates a dropdown of 15 years to control year,
-    today: 'Today',
-    clear: 'Clear',
-    close: 'Ok',
-    closeOnSelect: false // Close upon selecting a date,
-  });
+  
 
   modalChat();
   modalPhoto();
@@ -102,11 +94,14 @@ $(document).ready(function() {
           <div class="file-field input-field">
             <div class="btn">
               <span>Seleccionar</span>
-              <input type="file" multiple>
+              <input type="file" multiple id="file">
             </div>
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" placeholder="Seleccione su archivo">
             </div>
+            <button class="btn waves-effect waves-light right" type="submit" name="action" id="btnImg">Publicar
+              <i class="material-icons right">send</i>
+            </button>
           </div>
         </form>
       </div>`);
@@ -114,46 +109,62 @@ $(document).ready(function() {
   }
 
   function saveImg() {
-    $('file').on('change', function() {
-      if (typeof(FileReader) !== undefined) {
-        $('.element').html(`
-        <figure>
-          <img id="preview">
-        </figure>
-        `);
-        let preview = $('#preview');
-        console.log(preview);
-        preview.empty();
-  
-        let reader = new FileReader();
-        reader.onload = function(event) {
-          $('#preview').attr('src', event.target.result);
-        };
-        reader.readAsDataURL($(this)[0].files[0]);
-      } else {
-        console.log('Formato desconocido');
-      }
+    $('#file').on('change', function(ev) {
+      var files = ev.target.files;
+      console.log(files);// retorna un filelist
+      let i = 0;
+      for (let f; f = files[i]; i++) {
+        if (!f.type.match('image.*')) {
+          continue;
+        }
+        $('#btnImg').on('click', function(event) {
+          event.preventDefault();
+          var reader = new FileReader();
+          reader.onload = (function(theFile) {
+            return function(e) {
+              $('.img').append(`
+            <figure>
+            <img src=${e.target.result} class="responsive-img"> 
+            </figure>
+            `);
+            };
+          })(f);
+          reader.readAsDataURL(f);
+        });
+      };
     });
-  }
-
-
+  };
   function modalEvent() {
     $('#modal-event').addClass('modal-trigger');
-    $('.content-event').append(`
+    $('.modal-content-event').append(`
     <div class="row">
       <form class="col s12">
         <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s12">
             <input id="input_text" type="text" data-length="10">
             <label for="input_text">Título de tu evento</label>
-        </div>
-        <div class="row">
-          <div class="input-field col s12">
+            <input id="txtMap" type="text" data-length="10">
+            <label for="input_text">Título de tu evento</label>
+          </div>
+          <div class="col s12">
             <input type="text" class="datepicker">
           </div>
+          <button class="btn waves-effect waves-light right" type="submit" name="action" id="btnAdd">Publicar
+            <i class="material-icons right">send</i>
+          </button>
         </div>
       </form>
    </div>`);
+
+    $('.datepicker').pickadate({
+      selectMonths: true, // Creates a dropdown to control month
+      selectYears: 15, // Creates a dropdown of 15 years to control year,
+      today: 'Today',
+      clear: 'Clear',
+      close: 'Ok',
+      closeOnSelect: false // Close upon selecting a date,
+    });
+    initMap();
   }
 
   function modalVideo() {
@@ -164,13 +175,108 @@ $(document).ready(function() {
         <div class="file-field input-field">
           <div class="btn">
             <span>Seleccionar</span>
-            <input type="file" multiple>
+            <input type="file" multiple id="fileV">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text" placeholder="Seleccione su archivo">
           </div>
-          </div>
+          <button class="btn waves-effect waves-light right" type="submit" name="action" id="btnVideo">Publicar
+              <i class="material-icons right">send</i>
+          </button>
+        </div>
       </form>
     </div>`);
+    saveVideo();
+  }
+
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: {
+        latitud: -34.397,
+        longitud: 150.644
+      },
+      zoom: 15
+    });
+    var infoWindow = new google.maps.InfoWindow({ map: map });
+  
+    // Try HTML5 geolocation.
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+  
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('Location found.');
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }
+  
+    var txtMap = document.getElementById('txtMap');
+    var btnAdd = document.getElementById('btnAdd');
+    new google.maps.places.Autocomplete(txtmap);
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+  
+    directionsDisplay.setMap(map);
+  
+    var calculateAndDisplayRoute = function(directionsService, directionsDisplay) {
+      directionsService.route({
+        origin: txtmap.value,
+        travelMode: 'DRIVING',
+        unitSystem: google.maps.UnitSystem.METRIC
+      }, function(response, status) {
+        if (status === 'OK') {
+          directionsDisplay.setDirections(response);
+        } else {
+          window.alert('No encontramos una ruta');
+        }
+      });
+    };
+  
+    var trazarRuta = function() {
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+    };
+    btnRuta.addEventListener('click', trazarRuta);
+  
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+      infoWindow.setPosition(pos);
+      infoWindow.setContent(browserHasGeolocation ?
+        'Error: The Geolocation service failed.' :
+        'Error: Your browser doesn\'t support geolocation.');
+    }
+  }
+
+  function saveVideo() {
+    $('#fileV').on('change', function(ev) {
+      var files = ev.target.files;
+      console.log(files);// retorna un filelist
+      let i = 0;
+      for (let f; f = files[i]; i++) {
+        if (!f.type.match('video.*')) {
+          continue;
+        }
+        $('#btnVideo').on('click', function(event) {
+          event.preventDefault();
+          var reader = new FileReader();
+          reader.onload = (function(theFile) {
+            return function(e) {
+              $('.video').append(`
+            <figure>
+            <video src=${e.target.result} controls class="responsive-video"></video>
+            </figure>
+            `);
+            };
+          })(f);
+          reader.readAsDataURL(f);
+        });
+      };
+    });
   }
 });
