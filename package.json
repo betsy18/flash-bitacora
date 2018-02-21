@@ -1,0 +1,24 @@
+{
+  "name": "flash-bitacora",
+  "version": "1.0.0",
+  "description": "Implementación de una bitácora con funcionalidades como agregar comentarios, eventos con fecha y localización, agregar audio o video, etc.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betsy18/flash-bitacora.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/betsy18/flash-bitacora/issues"
+  },
+  "homepage": "https://github.com/betsy18/flash-bitacora#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
